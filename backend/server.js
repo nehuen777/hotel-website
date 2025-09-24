@@ -20,8 +20,36 @@ const dbConfig = {
     }
 };
 
-app.get('/api/test', (req, res) => {
-    res.json({ message: '¡La API funciona correctamente!' });
+app.get('/api/habitaciones', async (req, res) => {
+  try {
+    const pool = await sql.connect(dbConfig);
+    const result = await pool.request().query(`
+      SELECT
+        th.ID_TipoHabitacion,
+        th.Nombre AS TipoHabitacion,
+        th.Descripcion,
+        th.PrecioPorNoche,
+        CASE th.Nombre
+            -- Corregido: URL de la imagen para la habitación Simple
+            WHEN 'Simple' THEN 'https://images.pexels.com/photos/271618/pexels-photo-271618.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'
+            WHEN 'Doble' THEN 'https://images.unsplash.com/photo-1611892440504-42a792e24d32?q=80&w=2070&auto=format&fit=crop'
+            WHEN 'Suite' THEN 'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?q=80&w=2070&auto=format&fit=crop'
+            ELSE 'https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=2070&auto=format&fit=crop'
+        END AS ImagenURL,
+        (
+          SELECT s.Nombre + ', '
+          FROM Servicios s
+          JOIN TiposHabitacion_Servicios ths ON s.ID_Servicio = ths.ID_Servicio
+          WHERE ths.ID_TipoHabitacion = th.ID_TipoHabitacion
+          FOR XML PATH('')
+        ) AS Servicios
+      FROM TiposHabitacion th
+    `);
+    res.json(result.recordset);
+  } catch (err) {
+    console.error('Error en la consulta a la base de datos:', err);
+    res.status(500).send('Error al obtener los datos de las habitaciones');
+  }
 });
 
 app.listen(PORT, () => {

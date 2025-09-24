@@ -1,0 +1,9 @@
+/* frontend/src/components/HomeCarousel.css */
+
+.carousel-item img {
+  /* Establece una altura máxima relativa a la altura de la pantalla (65%) */
+  max-height: 65vh; 
+  
+  /* Asegura que la imagen cubra el espacio sin deformarse */
+  object-fit: cover; 
+}

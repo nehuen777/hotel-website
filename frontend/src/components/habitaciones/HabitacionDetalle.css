@@ -1,0 +1,25 @@
+/* frontend/src/components/habitaciones/HabitacionDetalle.css */
+
+.react-datepicker-wrapper,
+.react-datepicker__input-container {
+  width: 100%; /* Asegura que el input del datepicker ocupe todo el espacio de la columna */
+}
+
+/* Estilos para la imagen de la habitación */
+.card-img-top {
+  max-width: 100%; /* La imagen no excederá el ancho de su contenedor */
+  height: auto;    /* La altura se ajustará proporcionalmente al ancho */
+  object-fit: cover; /* Recorta la imagen para que cubra el área sin distorsionarla */
+  max-height: 400px; /* Limita la altura máxima para evitar imágenes excesivamente largas */
+  display: block; /* Elimina espacio extra debajo de la imagen si la hay */
+}
+
+/* Opcional: Centrar la imagen si es más pequeña que el contenedor */
+.card-img-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden; /* Asegura que si object-fit: cover recorta, no haya barras de desplazamiento */
+    /* Define una altura fija para el contenedor si quieres todas las imágenes del mismo tamaño visual */
+    /* height: 400px; */ 
+}

@@ -1,13 +1,11 @@
-// frontend/src/App.js
-
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Navbar from './components/Navbar';
-import HomeCarousel from './components/HomeCarousel';
-import Welcome from './components/Welcome';
-import Footer from './components/Footer';
-import Habitaciones from './components/Habitaciones'; // Importamos el nuevo componente
-import HabitacionDetalle from './components/HabitacionDetalle'; // Importamos el nuevo componente
+import Navbar from './components/layout/Navbar';
+import HomeCarousel from './components/home/HomeCarousel';
+import Welcome from './components/home/Welcome';
+import Footer from './components/layout/Footer';
+import Habitaciones from './components/habitaciones/Habitaciones';
+import HabitacionDetalle from './components/habitaciones/HabitacionDetalle';
 
 function App() {
   return (

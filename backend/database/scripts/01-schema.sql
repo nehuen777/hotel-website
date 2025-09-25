@@ -1,3 +1,7 @@
+CREATE DATABASE hotel_db;
+GO
+USE hotel_db;
+GO
 -- =====================================================================
 -- Script para la Creación de la Base de Datos del Hotel
 -- =====================================================================
@@ -11,7 +15,8 @@ CREATE TABLE TiposHabitacion (
     ID_TipoHabitacion INT PRIMARY KEY IDENTITY(1,1),
     Nombre VARCHAR(50) NOT NULL UNIQUE,
     Descripcion TEXT,
-    PrecioPorNoche DECIMAL(10, 2) NOT NULL
+    PrecioPorNoche DECIMAL(10, 2) NOT NULL,
+    ImagenURL VARCHAR(255)
 );
 
 -- -----------------------------------------------------

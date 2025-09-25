@@ -1,8 +1,8 @@
 -- 1. Insertar Tipos de Habitación
-INSERT INTO TiposHabitacion (Nombre, Descripcion, PrecioPorNoche) VALUES
-('Simple', 'Una habitación acogedora para un viajero solitario.', 50.00),
-('Doble', 'Espacio y comodidad para dos personas.', 85.00),
-('Suite', 'Lujo y servicios exclusivos con las mejores vistas.', 150.00);
+INSERT INTO TiposHabitacion (Nombre, Descripcion, PrecioPorNoche, ImagenURL) VALUES
+('Simple', 'Una habitación acogedora para un viajero solitario.', 50.00, 'https://images.pexels.com/photos/271618/pexels-photo-271618.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
+('Doble', 'Espacio perfecto para dos personas, con todas las comodidades.', 80.00, 'https://images.unsplash.com/photo-1611892440504-42a792e24d32?q=80&w=2070&auto=format&fit=crop'),
+('Suite', 'Lujo y confort con espacio adicional y vistas panorámicas.', 150.00, 'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?q=80&w=2070&auto=format&fit=crop');
 
 -- 2. Insertar Servicios
 INSERT INTO Servicios (Nombre, Descripcion) VALUES

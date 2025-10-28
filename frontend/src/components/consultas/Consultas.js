@@ -97,7 +97,6 @@ const Consultas = () => {
                 value={formData.email}
                 onChange={handleInputChange}
                 isInvalid={!!formErrors.email}
-                required // Añadir required para validación HTML básica
               />
               <Form.Control.Feedback type="invalid">
                 {formErrors.email}
@@ -113,7 +112,6 @@ const Consultas = () => {
                 value={formData.asunto}
                 onChange={handleInputChange}
                 isInvalid={!!formErrors.asunto}
-                required // Añadir required
               />
               <Form.Control.Feedback type="invalid">
                 {formErrors.asunto}
@@ -130,7 +128,6 @@ const Consultas = () => {
                 value={formData.mensaje}
                 onChange={handleInputChange}
                 isInvalid={!!formErrors.mensaje}
-                required // Añadir required
               />
               <Form.Control.Feedback type="invalid">
                 {formErrors.mensaje}

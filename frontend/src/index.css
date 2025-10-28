@@ -1,0 +1,79 @@
+:root {
+  --bs-primary: #1a5276; /* Un azul profundo y elegante */
+  --bs-primary-rgb: 26, 82, 118;
+
+  /* Opcional: Puedes definir otros colores si quieres */
+  /* --bs-secondary: #6c757d; */
+  /* --bs-success: #28a745; */
+  /* --bs-info: #17a2b8; */
+  /* --bs-warning: #ffc107; */
+  /* --bs-danger: #dc3545; */
+  /* --bs-light: #f8f9fa; */
+  /* --bs-dark: #343a40; */
+}
+
+/* Asegúrate de que los enlaces y botones usen el nuevo color primario */
+a {
+  color: var(--bs-primary);
+}
+
+a:hover {
+  color: var(--bs-primary-rgb);
+}
+
+.btn-primary {
+  --bs-btn-bg: var(--bs-primary);
+  --bs-btn-border-color: var(--bs-primary);
+  --bs-btn-hover-bg: #143e5a; /* Un tono más oscuro para el hover */
+  --bs-btn-hover-border-color: #143e5a;
+  --bs-btn-active-bg: #0f2e42;
+  --bs-btn-active-border-color: #0f2e42;
+  --bs-btn-focus-shadow-rgb: var(--bs-primary-rgb);
+}
+
+/* Animación de fade-in general para la página */
+.fade-in {
+  animation: fadeIn 0.8s ease-out forwards;
+  opacity: 0; /* Inicia invisible */
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px); /* Opcional: un ligero movimiento hacia arriba */
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0); 
+  }
+}
+
+/* Animación de fade-in escalonado para tarjetas */
+.card-fade-in {
+  animation: fadeIn 0.6s ease-out forwards;
+  opacity: 0; /* Inicia invisible */
+}
+
+/* Agresiva anulación para forzar la transición de deslizamiento del carrusel */
+.carousel-item-next,
+.carousel-item-prev,
+.carousel-item.active {
+  display: block;
+}
+
+.carousel-item-next:not(.carousel-item-start),
+.active.carousel-item-end {
+  transform: translateX(100%);
+}
+
+.carousel-item-prev:not(.carousel-item-end),
+.active.carousel-item-start {
+  transform: translateX(-100%);
+}
+
+.carousel-item-next,
+.carousel-item-prev,
+.carousel-item.active.carousel-item-start,
+.carousel-item.active.carousel-item-end {
+  transition: transform 0.6s ease-in-out !important;
+}

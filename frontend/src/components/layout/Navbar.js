@@ -12,7 +12,7 @@ function Navigation() {
           <Nav className="ms-auto">
             <Nav.Link as={Link} to="/">Inicio</Nav.Link>
             <Nav.Link as={Link} to="/habitaciones">Habitaciones</Nav.Link>
-            <Nav.Link href="#consultas">Consultas</Nav.Link>
+            <Nav.Link as={Link} to="/consultas">Consultas</Nav.Link>
           </Nav>
         </Navbar.Collapse>
       </Container>

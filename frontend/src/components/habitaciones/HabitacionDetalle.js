@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { Container, Row, Col, Button, Card, Spinner, Alert, Modal } from 'react-bootstrap'; // Se añade Modal
+import { BsCheckCircleFill } from 'react-icons/bs';
 import './HabitacionDetalle.css';
 import ReservaModal from './ReservaModal';
 
@@ -70,7 +71,7 @@ const HabitacionDetalle = () => {
   if (!habitacion) return null;
 
   return (
-    <Container className="my-5">
+    <Container className="my-5 fade-in">
       {/* El Alert de éxito de arriba se ha eliminado */}
 
       <Card>
@@ -81,9 +82,9 @@ const HabitacionDetalle = () => {
           <Card.Text>{habitacion.Descripcion}</Card.Text>
           <p><strong>Precio por noche:</strong> ${habitacion.PrecioPorNoche}</p>
           <h5>Servicios Incluidos:</h5>
-          <ul>
+          <ul className="list-unstyled">
             {habitacion.Servicios ? habitacion.Servicios.split(', ').map((servicio, index) => (
-              <li key={index}>{servicio}</li>
+              <li key={index}><BsCheckCircleFill className="me-2 text-success" />{servicio}</li>
             )) : <li>No especificados</li>}
           </ul>
         </Card.Body>

@@ -6,6 +6,7 @@ import Welcome from './components/home/Welcome';
 import Footer from './components/layout/Footer';
 import Habitaciones from './components/habitaciones/Habitaciones';
 import HabitacionDetalle from './components/habitaciones/HabitacionDetalle';
+import Consultas from './components/consultas/Consultas.js';
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
         } />
         <Route path="/habitaciones" element={<Habitaciones />} />
         <Route path="/habitaciones/:id" element={<HabitacionDetalle />} />
+        <Route path="/consultas" element={<Consultas />} />
       </Routes>
       <Footer />
     </Router>

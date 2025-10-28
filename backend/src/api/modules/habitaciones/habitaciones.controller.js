@@ -1,10 +1,10 @@
-import { PacientesService } from './habitaciones.services.js';
+import { HabitacionesService } from './habitaciones.services.js';
 
 export class HabitacionesController {
 
   static async getAllHabitaciones(req, res) {
     try {
-      const habitaciones = await PacientesService.getAllHabitaciones();
+      const habitaciones = await HabitacionesService.getAllHabitaciones();
       res.json(habitaciones);
     } catch (err) {
       res.status(500).send(err.message);
@@ -14,7 +14,7 @@ export class HabitacionesController {
   static async getHabitacionById(req, res) {
     try {
       const { id } = req.params;
-      const habitacion = await PacientesService.getHabitacionById(id);
+      const habitacion = await HabitacionesService.getHabitacionById(id);
       if (habitacion) {
         res.json(habitacion);
       } else {
@@ -34,7 +34,7 @@ export class HabitacionesController {
     }
 
     try {
-      const disponibilidad = await PacientesService.checkDisponibilidad(id, checkIn, checkOut);
+      const disponibilidad = await HabitacionesService.checkDisponibilidad(id, checkIn, checkOut);
       res.json(disponibilidad);
     } catch (err) {
       res.status(500).send(err.message);

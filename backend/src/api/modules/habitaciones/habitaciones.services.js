@@ -1,6 +1,6 @@
 import { sql, poolPromise } from '../../config/db.js';
 
-export class PacientesService {
+export class HabitacionesService {
   
   static async getAllHabitaciones() {
     try {

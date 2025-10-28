@@ -143,7 +143,7 @@ const HabitacionDetalle = () => {
         </Modal.Header>
         <Modal.Body className="text-center">
           <p className="fs-5">{successMessage}</p>
-          <p>Hemos enviado los detalles a su correo electrónico.</p>
+          <p>Se solicitará el pago en el momento que termine el servicio.</p>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="primary" onClick={() => setShowSuccessModal(false)}>

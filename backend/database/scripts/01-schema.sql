@@ -46,3 +46,12 @@ CREATE TABLE Reservas (
     FechaCreacion DATETIME DEFAULT GETDATE(),
     FOREIGN KEY (ID_Habitacion) REFERENCES Habitaciones(ID_Habitacion)
 );
+
+CREATE TABLE Consultas (
+    ID_Consulta INT PRIMARY KEY IDENTITY(1,1),
+    Email VARCHAR(100) NOT NULL,
+    Asunto VARCHAR(255) NOT NULL,
+    Mensaje TEXT NOT NULL,
+    FechaEnvio DATETIME DEFAULT GETDATE(),
+    Respondida BIT NOT NULL DEFAULT 0
+);

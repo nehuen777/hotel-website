@@ -8,9 +8,11 @@ export class ConsultasController {
     } catch (err) {
       console.error("Error en el controlador de consultas:", err);
       if (err.message === 'Faltan campos obligatorios.') {
-         res.status(400).json({ message: err.message });
+        return res.status(400).json({ message: err.message });
+      } else if (err.message === 'Error al procesar la consulta.') {
+        return res.status(500).json({ message: 'Error interno del servidor al procesar la consulta.' });
       } else {
-         res.status(500).json({ message: 'Error interno del servidor al procesar la consulta.' });
+        return res.status(500).json({ message: 'Error interno del servidor.' });
       }
     }
   }

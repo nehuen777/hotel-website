@@ -1,5 +1,6 @@
 import nodemailer from 'nodemailer';
 import 'dotenv/config';
+import { poolPromise, sql } from '../../config/db.js';
 
 const transporter = nodemailer.createTransport({
   service: 'gmail',
@@ -33,12 +34,19 @@ export class ConsultasService {
     };
 
     try {
+      const pool = await poolPromise;
+      await pool.request()
+        .input('Email', sql.VarChar(100), email)
+        .input('Asunto', sql.VarChar(255), asunto)
+        .input('Mensaje', sql.Text, mensaje)
+        .query('INSERT INTO Consultas (Email, Asunto, Mensaje) VALUES (@Email, @Asunto, @Mensaje)');
+
       const info = await transporter.sendMail(mailOptions);
       console.log('Correo de consulta enviado:', info.messageId);
       return { message: 'Consulta enviada con éxito.' };
     } catch (error) {
-      console.error('Error al enviar el correo de consulta:', error);
-      throw new Error('Error al enviar el correo.');
+      console.error('Error al procesar la consulta:', error);
+      throw new Error('Error al procesar la consulta.');
     }
   }
 }

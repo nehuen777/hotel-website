@@ -8,9 +8,12 @@ import Habitaciones from './components/habitaciones/Habitaciones';
 import HabitacionDetalle from './components/habitaciones/HabitacionDetalle';
 import Consultas from './components/consultas/Consultas.js';
 
+import ScrollToTop from './components/layout/ScrollToTop';
+
 function App() {
   return (
     <Router>
+      <ScrollToTop />
       <Navbar />
       <Routes>
         <Route path="/" element={

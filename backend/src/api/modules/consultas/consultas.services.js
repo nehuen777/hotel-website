@@ -58,7 +58,7 @@ export class ConsultasService {
 
       if (filtros && filtros.respondida !== undefined) {
         query += ' WHERE Respondida = @respondida';
-        request.input('respondida', sql.Bit, filtros.respondida);
+        request.input('respondida', sql.Bit, !!Number(filtros.respondida));
       }
 
       query += ' ORDER BY FechaEnvio DESC';

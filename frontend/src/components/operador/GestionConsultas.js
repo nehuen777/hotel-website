@@ -9,7 +9,7 @@ const GestionConsultas = () => {
 
   const cargarConsultas = async () => {
     try {
-      const data = await fetchProtegido('http://localhost:5000/api/operador/consultas?respondida=0');
+      const data = await fetchProtegido('http://localhost:5000/api/consultas?respondida=0');
       setConsultas(data);
     } catch (err) {
       setError(err.message);
@@ -30,7 +30,7 @@ const GestionConsultas = () => {
     if (!selectedConsulta || !respuesta) return;
 
     try {
-      await fetchProtegido(`http://localhost:5000/api/operador/consultas/${selectedConsulta.ID_Consulta}/responder`, {
+      await fetchProtegido(`http://localhost:5000/api/consultas/${selectedConsulta.ID_Consulta}/responder`, {
         method: 'POST',
         body: JSON.stringify({ textoRespuesta: respuesta }),
       });

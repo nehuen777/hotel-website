@@ -2,7 +2,6 @@ import express from 'express';
 import { verificarToken } from '../../middleware/auth.middleware.js';
 import { HabitacionesController } from '../habitaciones/habitaciones.controller.js';
 import { ReservasController } from '../reservas/reservas.controller.js';
-import { ConsultasController } from '../consultas/consultas.controller.js';
 
 const router = express.Router();
 
@@ -17,9 +16,5 @@ router.patch('/habitaciones/:id/estado', HabitacionesController.actualizarEstado
 router.get('/reservas', ReservasController.getReservasOperador);
 router.patch('/reservas/:id/cancelar', ReservasController.cancelarReserva);
 router.patch('/reservas/:id/pago', ReservasController.marcarReservaPagada);
-
-// Rutas para la gestión de consultas por parte del operador
-router.get('/consultas', ConsultasController.getConsultas);
-router.post('/consultas/:id/responder', ConsultasController.responderConsulta);
 
 export default router;

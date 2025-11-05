@@ -1,0 +1,29 @@
+.floor-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 1rem;
+}
+
+.room-card {
+  text-align: center;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.room-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.status-libre {
+  background-color: var(--bs-success);
+}
+
+.status-ocupada {
+  background-color: var(--bs-warning);
+}
+
+.status-cerrada {
+  background-color: var(--bs-danger);
+}

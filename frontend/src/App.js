@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import Navbar from './components/layout/Navbar';
 import HomeCarousel from './components/home/HomeCarousel';
 import Welcome from './components/home/Welcome';
@@ -19,6 +19,17 @@ import ScrollToTop from './components/layout/ScrollToTop';
 function App() {
   return (
     <Router>
+      <MainContent />
+    </Router>
+  );
+}
+
+function MainContent() {
+  const location = useLocation();
+  const isOperadorPage = location.pathname.startsWith('/operador');
+
+  return (
+    <>
       <ScrollToTop />
       <Navbar />
       <Routes>
@@ -43,8 +54,8 @@ function App() {
         </Route>
 
       </Routes>
-      <Footer />
-    </Router>
+      {!isOperadorPage && <Footer />}
+    </>
   );
 }
 

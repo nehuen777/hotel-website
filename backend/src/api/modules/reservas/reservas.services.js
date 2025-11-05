@@ -99,15 +99,17 @@ export class ReservasService {
           whereClauses.push(`r.FechaCheckOut <= @fechaFin`);
           request.input('fechaFin', sql.Date, filtros.fechaFin);
         }
-        if (filtros.idEstadoReserva) {
-          whereClauses.push(`r.ID_EstadoReserva = @idEstadoReserva`);
-          request.input('idEstadoReserva', sql.Int, filtros.idEstadoReserva);
+        if (filtros.estado && filtros.estado !== 'Todas') {
+          whereClauses.push(`er.NombreEstado = @estado`);
+          request.input('estado', sql.VarChar, filtros.estado);
         }
       }
 
       if (whereClauses.length > 0) {
         query += ` WHERE ` + whereClauses.join(' AND ');
       }
+
+      query += ` ORDER BY r.FechaCheckOut ASC`;
 
       const result = await request.query(query);
       return result.recordset;

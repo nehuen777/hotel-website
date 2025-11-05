@@ -1,7 +1,7 @@
 import React from 'react';
 import { Navbar, Nav, Container, Button } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
-import { Building, House, DoorOpen, ChatDots, Map, CardList, ChatLeftDots, BoxArrowRight } from 'react-bootstrap-icons';
+import { Building, House, DoorOpen, ChatDots, Map, CardList, ChatLeftDots, BoxArrowRight, PersonCircle } from 'react-bootstrap-icons';
 import { useAuth } from '../../context/AuthContext';
 import './Navbar.css';
 
@@ -49,6 +49,9 @@ function Navigation() {
                 </Nav.Link>
                 <Nav.Link as={Link} to="/consultas" className="d-flex align-items-center">
                   <ChatDots className="me-1" /> Consultas
+                </Nav.Link>
+                <Nav.Link as={Link} to="/login" className="d-flex align-items-center">
+                  <PersonCircle className="me-1" /> Login
                 </Nav.Link>
               </>
             )}

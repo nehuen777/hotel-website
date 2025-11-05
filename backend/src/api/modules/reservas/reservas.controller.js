@@ -19,4 +19,33 @@ export class ReservasController {
       res.status(500).json({ message: 'Error en el servidor al procesar la reserva.' });
     }
   }
+
+  static async getReservasOperador(req, res) {
+    try {
+      const reservas = await ReservasService.getReservasOperador(req.query);
+      res.json(reservas);
+    } catch (err) {
+      res.status(500).send(err.message);
+    }
+  }
+
+  static async cancelarReserva(req, res) {
+    try {
+      const { id } = req.params;
+      const resultado = await ReservasService.cancelarReserva(id);
+      res.json(resultado);
+    } catch (err) {
+      res.status(500).send(err.message);
+    }
+  }
+
+  static async marcarReservaPagada(req, res) {
+    try {
+      const { id } = req.params;
+      const resultado = await ReservasService.marcarReservaPagada(id);
+      res.json(resultado);
+    } catch (err) {
+      res.status(500).send(err.message);
+    }
+  }
 }

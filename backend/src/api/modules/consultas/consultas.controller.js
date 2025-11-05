@@ -16,4 +16,27 @@ export class ConsultasController {
       }
     }
   }
+
+  static async getConsultas(req, res) {
+    try {
+      const consultas = await ConsultasService.getConsultas(req.query);
+      res.json(consultas);
+    } catch (err) {
+      res.status(500).send(err.message);
+    }
+  }
+
+  static async responderConsulta(req, res) {
+    try {
+      const { id } = req.params;
+      const { textoRespuesta } = req.body;
+      if (!textoRespuesta) {
+        return res.status(400).json({ message: 'El texto de la respuesta es requerido.' });
+      }
+      const resultado = await ConsultasService.responderConsulta(id, textoRespuesta);
+      res.json(resultado);
+    } catch (err) {
+      res.status(500).send(err.message);
+    }
+  }
 }

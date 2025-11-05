@@ -31,7 +31,21 @@ CREATE TABLE Habitaciones (
     ID_TipoHabitacion INT NOT NULL,
     NumeroHabitacion VARCHAR(10) NOT NULL UNIQUE,
     Piso INT NOT NULL,
+    Abierta BIT NOT NULL DEFAULT 1,
     FOREIGN KEY (ID_TipoHabitacion) REFERENCES TiposHabitacion(ID_TipoHabitacion)
+);
+
+CREATE TABLE Operadores (
+    ID_Operador INT PRIMARY KEY IDENTITY(1,1),
+    Email VARCHAR(100) NOT NULL UNIQUE,
+    ContrasenaHash VARCHAR(255) NOT NULL,
+    Nombre VARCHAR(100),
+    Apellido VARCHAR(100)
+);
+
+CREATE TABLE EstadosReserva (
+    ID_EstadoReserva INT PRIMARY KEY IDENTITY(1,1),
+    NombreEstado VARCHAR(50) NOT NULL UNIQUE
 );
 
 CREATE TABLE Reservas (
@@ -44,7 +58,10 @@ CREATE TABLE Reservas (
     DNICliente VARCHAR(20) NOT NULL,
     EmailCliente VARCHAR(100) NOT NULL,
     FechaCreacion DATETIME DEFAULT GETDATE(),
-    FOREIGN KEY (ID_Habitacion) REFERENCES Habitaciones(ID_Habitacion)
+    Pagada BIT NOT NULL DEFAULT 0,
+    ID_EstadoReserva INT NOT NULL DEFAULT 1,
+    FOREIGN KEY (ID_Habitacion) REFERENCES Habitaciones(ID_Habitacion),
+    FOREIGN KEY (ID_EstadoReserva) REFERENCES EstadosReserva(ID_EstadoReserva)
 );
 
 CREATE TABLE Consultas (

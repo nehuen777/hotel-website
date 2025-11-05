@@ -28,3 +28,12 @@ INSERT INTO Habitaciones (ID_TipoHabitacion, NumeroHabitacion, Piso) VALUES
 -- 3 Suites (Piso 5)
 INSERT INTO Habitaciones (ID_TipoHabitacion, NumeroHabitacion, Piso) VALUES
 (3, '501', 5), (3, '502', 5), (3, '503', 5);
+
+INSERT INTO EstadosReserva (NombreEstado) VALUES
+('Activa'),
+('Cancelada'),
+('Completada');
+
+INSERT INTO Operadores (Email, ContrasenaHash, Nombre, Apellido) VALUES
+('operador@hotel.com', '$2b$10$lMhae2T2Xr8Or38yvxB9HeBJAMFZhEV1w673PfJHajQNeZX47PtFW', 'Operador', 'Principal');
+

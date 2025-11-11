@@ -67,6 +67,7 @@ const MapaHabitaciones = () => {
                   <Card.Text className="mb-0">
                     {!h.Abierta ? 'Mantenimiento' : h.Ocupada ? 'Ocupada' : 'Libre'}
                   </Card.Text>
+                  <Card.Text>{h.TipoHabitacionNombre}</Card.Text>
                 </Card.Body>
                 <Card.Footer>
                   <Form.Check 

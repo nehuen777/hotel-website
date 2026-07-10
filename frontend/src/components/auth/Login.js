@@ -26,7 +26,7 @@ const Login = () => {
         <div className="col-md-6">
           <div className="card">
             <div className="card-body">
-              <h2 className="card-title text-center">Inicio de Sesión de Operador</h2>
+              <h2 className="card-title text-center">Inicio de Sesión</h2>
               <form onSubmit={handleSubmit}>
                 {error && <div className="alert alert-danger">{error}</div>}
                 <div className="mb-3">

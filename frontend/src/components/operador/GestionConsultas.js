@@ -87,6 +87,7 @@ const GestionConsultas = () => {
     <div className="container-fluid mt-4">
       <h2 className="mb-4">Gestión de Consultas</h2>
       {error && <Alert variant="danger">{error}</Alert>}
+      {statusMsg && <Alert variant={statusVariant} onClose={() => setStatusMsg('')} dismissible>{statusMsg}</Alert>}
       <Row>
         <Col md={5} lg={4}>
           <h4 className="mb-3">Consultas Pendientes</h4>
@@ -107,7 +108,7 @@ const GestionConsultas = () => {
                 <hr />
                 <h5 className="mb-3">Responder</h5>
                 <Form onSubmit={handleResponder}>
-                  {statusMsg && <Alert variant={statusVariant} onClose={() => setStatusMsg('')} dismissible>{statusMsg}</Alert>}
+
                   <Form.Group className="mb-3">
                     <Form.Label htmlFor="respuesta">Mensaje de Respuesta</Form.Label>
                     <Form.Control 

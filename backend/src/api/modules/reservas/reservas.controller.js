@@ -48,4 +48,21 @@ export class ReservasController {
       res.status(500).send(err.message);
     }
   }
+
+  static async liberarReserva(req, res) {
+    try {
+      const { id } = req.params;
+      const resultado = await ReservasService.liberarReserva(id);
+      res.json(resultado);
+    } catch (err) {
+      if (err.message === 'No se puede liberar una reserva que no ha sido pagada.') {
+        return res.status(400).json({ message: err.message });
+      }
+      if (err.message === 'Reserva no encontrada.') {
+        return res.status(404).json({ message: err.message });
+      }
+      console.error("Error al liberar la reserva:", err);
+      res.status(500).json({ message: 'Error en el servidor al liberar la reserva.' });
+    }
+  }
 }

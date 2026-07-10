@@ -148,4 +148,35 @@ export class ReservasService {
       throw new Error('Error del servidor al procesar el pago.');
     }
   }
+
+  static async liberarReserva(idReserva) {
+    try {
+      const pool = await poolPromise;
+      // Primero, verificar si la reserva ha sido pagada
+      const checkPaid = await pool.request()
+        .input('idReserva', sql.Int, idReserva)
+        .query('SELECT Pagada FROM Reservas WHERE ID_Reserva = @idReserva');
+
+      if (checkPaid.recordset.length === 0) {
+        throw new Error('Reserva no encontrada.');
+      }
+
+      if (checkPaid.recordset[0].Pagada === 0) {
+        throw new Error('No se puede liberar una reserva que no ha sido pagada.');
+      }
+
+      // Si está pagada, proceder a liberarla
+      await pool.request()
+        .input('idReserva', sql.Int, idReserva)
+        .query(`
+          UPDATE Reservas 
+          SET ID_EstadoReserva = (SELECT ID_EstadoReserva FROM EstadosReserva WHERE NombreEstado = 'Liberada')
+          WHERE ID_Reserva = @idReserva
+        `);
+      return { message: 'Reserva liberada correctamente.' };
+    } catch (err) {
+      console.error("Error al liberar la reserva:", err);
+      throw err; // Propagar el error para manejo en el controlador
+    }
+  }
 }

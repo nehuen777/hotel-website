@@ -15,8 +15,8 @@ const GestionReservas = () => {
     fechaFin: null
   });
 
-  const cargarReservas = useCallback(async () => {
-    setLoading(true);
+  const cargarReservas = useCallback(async (showSpinner = true) => {
+    if (showSpinner) setLoading(true);
     try {
       const params = new URLSearchParams();
       params.append('estado', filtros.estado);
@@ -32,7 +32,7 @@ const GestionReservas = () => {
     } catch (err) {
       setError(err.message);
     } finally {
-      setLoading(false);
+      if (showSpinner) setLoading(false);
     }
   }, [filtros]);
 
@@ -43,7 +43,7 @@ const GestionReservas = () => {
   const handleMarcarPagada = async (id) => {
     try {
       await fetchProtegido(`http://localhost:5000/api/operador/reservas/${id}/pago`, { method: 'PATCH' });
-      cargarReservas();
+      cargarReservas(false);
     } catch (err) {
       setError(err.message);
     }
@@ -52,7 +52,16 @@ const GestionReservas = () => {
   const handleCancelar = async (id) => {
     try {
       await fetchProtegido(`http://localhost:5000/api/operador/reservas/${id}/cancelar`, { method: 'PATCH' });
-      cargarReservas();
+      cargarReservas(false);
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
+  const handleLiberar = async (id) => {
+    try {
+      await fetchProtegido(`http://localhost:5000/api/operador/reservas/${id}/liberar`, { method: 'PATCH' });
+      cargarReservas(false);
     } catch (err) {
       setError(err.message);
     }
@@ -76,7 +85,7 @@ const GestionReservas = () => {
     switch (estado) {
       case 'Activa': return 'success';
       case 'Cancelada': return 'danger';
-      case 'Completada': return 'secondary';
+      case 'Liberada': return 'secondary';
       default: return 'primary';
     }
   };
@@ -122,6 +131,11 @@ const GestionReservas = () => {
                     <CashCoin className="me-1" /> Marcar Pagada
                   </Button>
                 )}
+                {r.NombreEstado === 'Activa' && r.Pagada && (
+                  <Button variant="outline-info" size="sm" className="me-2" onClick={() => handleLiberar(r.ID_Reserva)}>
+                    Liberar
+                  </Button>
+                )}
                 {r.NombreEstado === 'Activa' && (
                   <Button variant="outline-danger" size="sm" onClick={() => handleCancelar(r.ID_Reserva)}>
                     <XCircle className="me-1" /> Cancelar
@@ -149,7 +163,7 @@ const GestionReservas = () => {
               <Form.Select name="estado" value={filtros.estado} onChange={handleFilterChange}>
                 <option value="Todas">Todas</option>
                 <option value="Activa">Activas</option>
-                <option value="Completada">Completadas</option>
+                <option value="Liberada">Liberadas</option>
                 <option value="Cancelada">Canceladas</option>
               </Form.Select>
             </Col>

@@ -32,7 +32,7 @@ INSERT INTO Habitaciones (ID_TipoHabitacion, NumeroHabitacion, Piso) VALUES
 INSERT INTO EstadosReserva (NombreEstado) VALUES
 ('Activa'),
 ('Cancelada'),
-('Completada');
+('Liberada');
 
 INSERT INTO Operadores (Email, ContrasenaHash, Nombre, Apellido) VALUES
 ('operador@hotel.com', '$2b$10$lMhae2T2Xr8Or38yvxB9HeBJAMFZhEV1w673PfJHajQNeZX47PtFW', 'Operador', 'Principal');

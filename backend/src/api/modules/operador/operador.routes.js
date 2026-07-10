@@ -16,5 +16,6 @@ router.patch('/habitaciones/:id/estado', HabitacionesController.actualizarEstado
 router.get('/reservas', ReservasController.getReservasOperador);
 router.patch('/reservas/:id/cancelar', ReservasController.cancelarReserva);
 router.patch('/reservas/:id/pago', ReservasController.marcarReservaPagada);
+router.patch('/reservas/:id/liberar', ReservasController.liberarReserva);
 
 export default router;

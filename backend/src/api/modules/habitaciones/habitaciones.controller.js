@@ -2,6 +2,7 @@ import { HabitacionesService } from './habitaciones.services.js';
 
 export class HabitacionesController {
 
+  // --- MÉTODOS PÚBLICOS ORIGINALES ---
   static async getAllHabitaciones(req, res) {
     try {
       const habitaciones = await HabitacionesService.getAllHabitaciones();
@@ -61,6 +62,46 @@ export class HabitacionesController {
       res.json(resultado);
     } catch (err) {
       res.status(500).send(err.message);
+    }
+  }
+
+  // --- NUEVOS MÉTODOS PARA EL ADMINISTRADOR ---
+  
+  static async getAdminHabitaciones(req, res) {
+    try {
+      const habitaciones = await HabitacionesService.getAdminHabitaciones();
+      res.json(habitaciones);
+    } catch (err) {
+      res.status(500).json({ message: err.message });
+    }
+  }
+
+  static async createHabitacion(req, res) {
+    try {
+      await HabitacionesService.createHabitacion(req.body);
+      res.status(201).json({ message: 'Habitación creada exitosamente' });
+    } catch (err) {
+      res.status(500).json({ message: err.message });
+    }
+  }
+
+  static async updateHabitacion(req, res) {
+    try {
+      const { id } = req.params;
+      await HabitacionesService.updateHabitacion(id, req.body);
+      res.json({ message: 'Habitación actualizada exitosamente' });
+    } catch (err) {
+      res.status(500).json({ message: err.message });
+    }
+  }
+
+  static async deleteHabitacion(req, res) {
+    try {
+      const { id } = req.params;
+      await HabitacionesService.deleteHabitacion(id);
+      res.json({ message: 'Habitación eliminada exitosamente' });
+    } catch (err) {
+      res.status(400).json({ message: err.message });
     }
   }
 }

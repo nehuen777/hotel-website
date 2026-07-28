@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Tabs, Tab, Container } from 'react-bootstrap';
 import CrudTipos from './CrudTipos';
 import CrudServicios from './CrudServicios';
+import CrudHabitaciones from './CrudHabitaciones.js';
 
 const HabitacionesAdmin = () => {
     const [key, setKey] = useState('habitaciones');
@@ -20,9 +21,7 @@ const HabitacionesAdmin = () => {
                     
                     {/* Añadimos unmountOnExit a cada Tab */}
                     <Tab eventKey="habitaciones" title="1. Habitaciones Físicas" unmountOnExit>
-                        <div className="fade-in">
-                            <p>En construcción... (Próximo paso)</p>
-                        </div>
+                        <CrudHabitaciones />
                     </Tab>
 
                     <Tab eventKey="tipos" title="2. Tipos y Servicios" unmountOnExit>

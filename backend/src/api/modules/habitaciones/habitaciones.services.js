@@ -2,6 +2,7 @@ import { sql, poolPromise } from '../../config/db.js';
 
 export class HabitacionesService {
   
+  // --- MÉTODOS PÚBLICOS ORIGINALES ---
   static async getAllHabitaciones() {
     try {
       const pool = await poolPromise;
@@ -134,6 +135,62 @@ export class HabitacionesService {
     } catch (err) {
       console.error("Error al actualizar el estado de la habitación:", err);
       throw new Error('Error del servidor al actualizar el estado de la habitación.');
+    }
+  }
+
+  // --- NUEVOS MÉTODOS PARA EL PANEL DE ADMINISTRADOR (CRUD) ---
+  
+  static async getAdminHabitaciones() {
+    try {
+      const pool = await poolPromise;
+      const result = await pool.request().query(`
+        SELECT h.*, t.Nombre as NombreTipo 
+        FROM Habitaciones h
+        LEFT JOIN TiposHabitacion t ON h.ID_TipoHabitacion = t.ID_TipoHabitacion
+      `);
+      return result.recordset;
+    } catch (err) {
+      throw new Error('Error al obtener la lista administrativa de habitaciones.');
+    }
+  }
+
+  static async createHabitacion(data) {
+    try {
+      const pool = await poolPromise;
+      await pool.request()
+        .input('idTipo', sql.Int, data.ID_TipoHabitacion)
+        .input('numero', sql.VarChar, data.NumeroHabitacion)
+        .input('piso', sql.Int, data.Piso)
+        .input('abierta', sql.Bit, data.Abierta) 
+        .query('INSERT INTO Habitaciones (ID_TipoHabitacion, NumeroHabitacion, Piso, Abierta) VALUES (@idTipo, @numero, @piso, @abierta)');
+    } catch (err) {
+      throw new Error('Error al crear la habitación. Verifique que el número no esté duplicado.');
+    }
+  }
+
+  static async updateHabitacion(id, data) {
+    try {
+      const pool = await poolPromise;
+      await pool.request()
+        .input('id', sql.Int, id)
+        .input('idTipo', sql.Int, data.ID_TipoHabitacion)
+        .input('numero', sql.VarChar, data.NumeroHabitacion)
+        .input('piso', sql.Int, data.Piso)
+        .input('abierta', sql.Bit, data.Abierta)
+        .query('UPDATE Habitaciones SET ID_TipoHabitacion = @idTipo, NumeroHabitacion = @numero, Piso = @piso, Abierta = @abierta WHERE ID_Habitacion = @id');
+    } catch (err) {
+      throw new Error('Error al actualizar la habitación.');
+    }
+  }
+
+  static async deleteHabitacion(id) {
+    try {
+      const pool = await poolPromise;
+      await pool.request()
+        .input('id', sql.Int, id)
+        .query('DELETE FROM Habitaciones WHERE ID_Habitacion = @id');
+    } catch (err) {
+      throw new Error('No se puede eliminar. Es posible que haya reservas vinculadas a esta habitación física.');
     }
   }
 }

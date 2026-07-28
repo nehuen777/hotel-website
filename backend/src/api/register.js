@@ -6,6 +6,7 @@ import * as operadorModule from './modules/operador/operador.index.js';
 import * as serviciosModule from './modules/servicios/servicios.index.js';
 import * as tiposModule from './modules/tipos/tipos.index.js';
 import * as usuariosModule from './modules/usuarios/usuarios.index.js';
+import * as dashboardModule from './modules/dashboard/dashboard.index.js';
 
 export function registerModules(app) {
   console.log('🚀 Iniciando registro de módulos...');
@@ -17,5 +18,6 @@ export function registerModules(app) {
   serviciosModule.mount(app);
   tiposModule.mount(app);
   usuariosModule.mount(app);
+  dashboardModule.mount(app);
   console.log('✅ Módulos registrados.');
 }

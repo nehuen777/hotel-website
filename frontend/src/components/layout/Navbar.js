@@ -81,8 +81,8 @@ function Navigation() {
                 <Nav.Link as={Link} to="/admin/operadores" className="d-flex align-items-center">
                   <People className="me-2" /> CRUD Operadores
                 </Nav.Link>
-                <Nav.Link as={Link} to="/admin/graficos" className="d-flex align-items-center">
-                  <GraphUp className="me-2" /> Gráficos e Informes
+                <Nav.Link as={Link} to="/admin/dashboard" className="d-flex align-items-center">
+                  <GraphUp className="me-2" /> Dashboard
                 </Nav.Link>
               </>
             )}

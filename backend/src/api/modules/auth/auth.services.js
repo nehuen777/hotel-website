@@ -4,31 +4,33 @@ import jwt from 'jsonwebtoken';
 
 const JWT_SECRET = 'your_jwt_secret_key'; // ¡Mover a una variable de entorno en producción!
 
-export async function autenticarOperador(email, contrasena) {
+export async function autenticarUsuario(email, contrasena) {
   try {
     const pool = await poolPromise;
     const result = await pool.request()
       .input('email', sql.VarChar, email)
-      .query('SELECT * FROM Operadores WHERE Email = @email');
+      .query('SELECT * FROM Usuarios WHERE Email = @email');
 
     if (result.recordset.length === 0) {
-      throw new Error('Authentication failed. Operator not found.');
+      throw new Error('Authentication failed. User not found.');
     }
 
-    const operador = result.recordset[0];
-    const contrasenaValida = await bcrypt.compare(contrasena, operador.ContrasenaHash);
+    const usuario = result.recordset[0];
+    const contrasenaValida = await bcrypt.compare(contrasena, usuario.ContrasenaHash);
 
     if (!contrasenaValida) {
       throw new Error('Authentication failed. Invalid password.');
     }
 
     const token = jwt.sign(
-      { id: operador.ID_Operador, email: operador.Email },
+      { id: usuario.ID_Usuario,
+        email: usuario.Email,
+      esAdmin: usuario.esAdmin},
       JWT_SECRET,
       { expiresIn: '8h' }
     );
 
-    return { token };
+    return { token, esAdmin: usuario.esAdmin };
   } catch (error) {
     throw error;
   }

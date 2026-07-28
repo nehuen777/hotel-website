@@ -8,7 +8,7 @@ export async function login(req, res) {
   }
 
   try {
-    const result = await authService.autenticarOperador(email, contrasena);
+    const result = await authService.autenticarUsuario(email, contrasena);
     res.json(result);
   } catch (error) {
     res.status(401).json({ message: error.message });

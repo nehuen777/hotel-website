@@ -34,6 +34,7 @@ INSERT INTO EstadosReserva (NombreEstado) VALUES
 ('Cancelada'),
 ('Liberada');
 
-INSERT INTO Operadores (Email, ContrasenaHash, Nombre, Apellido) VALUES
-('operador@hotel.com', '$2b$10$lMhae2T2Xr8Or38yvxB9HeBJAMFZhEV1w673PfJHajQNeZX47PtFW', 'Operador', 'Principal');
+INSERT INTO Usuarios (Email, ContrasenaHash, Nombre, Apellido, esAdmin) VALUES
+('operador@hotel.com', '$2b$10$lMhae2T2Xr8Or38yvxB9HeBJAMFZhEV1w673PfJHajQNeZX47PtFW', 'Operador', 'Principal', 0),
+('admin@hotel.com', '$2b$10$lMhae2T2Xr8Or38yvxB9HeBJAMFZhEV1w673PfJHajQNeZX47PtFW', 'Administrador', 'Principal', 1);
 

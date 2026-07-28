@@ -35,12 +35,13 @@ CREATE TABLE Habitaciones (
     FOREIGN KEY (ID_TipoHabitacion) REFERENCES TiposHabitacion(ID_TipoHabitacion)
 );
 
-CREATE TABLE Operadores (
-    ID_Operador INT PRIMARY KEY IDENTITY(1,1),
+CREATE TABLE Usuarios (
+    ID_Usuario INT PRIMARY KEY IDENTITY(1,1),
     Email VARCHAR(100) NOT NULL UNIQUE,
     ContrasenaHash VARCHAR(255) NOT NULL,
     Nombre VARCHAR(100),
-    Apellido VARCHAR(100)
+    Apellido VARCHAR(100),
+    esAdmin BIT NOT NULL DEFAULT 0
 );
 
 CREATE TABLE EstadosReserva (

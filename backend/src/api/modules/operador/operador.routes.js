@@ -1,12 +1,12 @@
 import express from 'express';
-import { verificarToken } from '../../middleware/auth.middleware.js';
+import { verificarToken, esOperador} from '../../middleware/auth.middleware.js';
 import { HabitacionesController } from '../habitaciones/habitaciones.controller.js';
 import { ReservasController } from '../reservas/reservas.controller.js';
 
 const router = express.Router();
 
 // Proteger todas las rutas de este módulo
-router.use(verificarToken);
+router.use(verificarToken, esOperador);
 
 // Rutas para la gestión de habitaciones por parte del operador
 router.get('/habitaciones/mapa', HabitacionesController.getEstadoMapaHabitaciones);

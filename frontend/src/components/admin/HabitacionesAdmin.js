@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Tabs, Tab, Table, Button, Container, Row, Col } from 'react-bootstrap';
+import { Tabs, Tab, Container } from 'react-bootstrap';
+import CrudTipos from './CrudTipos';
 import CrudServicios from './CrudServicios';
 
 const HabitacionesAdmin = () => {
@@ -17,23 +18,18 @@ const HabitacionesAdmin = () => {
                     className="mb-4"
                 >
                     
-                    {/* --- PESTAÑA 1: Habitaciones Físicas --- */}
-                    <Tab eventKey="habitaciones" title="1. Habitaciones Físicas">
+                    {/* Añadimos unmountOnExit a cada Tab */}
+                    <Tab eventKey="habitaciones" title="1. Habitaciones Físicas" unmountOnExit>
                         <div className="fade-in">
-                            <p>En construcción...</p>
+                            <p>En construcción... (Próximo paso)</p>
                         </div>
                     </Tab>
 
-                    {/* --- PESTAÑA 2: Tipos y Servicios --- */}
-                    <Tab eventKey="tipos" title="2. Tipos y Servicios">
-                         <div className="fade-in">
-                           <p>En construcción...</p>
-                        </div>
+                    <Tab eventKey="tipos" title="2. Tipos y Servicios" unmountOnExit>
+                         <CrudTipos />
                     </Tab>
 
-                    {/* --- PESTAÑA 3: Catálogo de Servicios --- */}
-                    <Tab eventKey="servicios" title="3. Catálogo de Servicios">
-                        {/* Aquí insertamos el componente externo */}
+                    <Tab eventKey="servicios" title="3. Catálogo de Servicios" unmountOnExit>
                         <CrudServicios />
                     </Tab>
 

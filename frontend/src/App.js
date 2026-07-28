@@ -15,7 +15,7 @@ import GestionReservas from './components/operador/GestionReservas';
 import GestionConsultas from './components/operador/GestionConsultas';
 import AdminPanel from './components/admin/AdminstradorPanel.js';
 import HabitacionesAdmin from './components/admin/HabitacionesAdmin.js';
-import Operadores from './components/admin/Operadores';
+import CrudOperadores from './components/admin/CrudOperadores';
 import Graficos from './components/admin/Graficos.js';
 
 import ScrollToTop from './components/layout/ScrollToTop';
@@ -64,7 +64,7 @@ function MainContent() {
           <Route path="" element={<AdminPanel />}>
             <Route index element={<Navigate to="habitaciones" replace />} />
             <Route path="habitaciones" element={<HabitacionesAdmin />} />
-            <Route path="operadores" element={<Operadores />} />
+            <Route path="operadores" element={<CrudOperadores />} />
             <Route path="graficos" element={<Graficos />} />
           </Route>
         </Route>

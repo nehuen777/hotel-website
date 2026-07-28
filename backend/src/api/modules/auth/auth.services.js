@@ -16,6 +16,14 @@ export async function autenticarUsuario(email, contrasena) {
     }
 
     const usuario = result.recordset[0];
+
+    // ---> AQUÍ AGREGAMOS LA VALIDACIÓN DEL SOFT-DELETE <---
+    // En SQL Server el BIT suele llegar como un booleano (true/false) en Node
+    if (usuario.Activo === false) {
+      throw new Error('Su cuenta ha sido suspendida. Contacte al administrador.');
+    }
+    // -------------------------------------------------------
+
     const contrasenaValida = await bcrypt.compare(contrasena, usuario.ContrasenaHash);
 
     if (!contrasenaValida) {
@@ -23,9 +31,11 @@ export async function autenticarUsuario(email, contrasena) {
     }
 
     const token = jwt.sign(
-      { id: usuario.ID_Usuario,
+      { 
+        id: usuario.ID_Usuario,
         email: usuario.Email,
-      esAdmin: usuario.esAdmin},
+        esAdmin: usuario.esAdmin 
+      },
       JWT_SECRET,
       { expiresIn: '8h' }
     );

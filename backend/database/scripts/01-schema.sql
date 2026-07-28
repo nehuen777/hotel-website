@@ -41,7 +41,8 @@ CREATE TABLE Usuarios (
     ContrasenaHash VARCHAR(255) NOT NULL,
     Nombre VARCHAR(100),
     Apellido VARCHAR(100),
-    esAdmin BIT NOT NULL DEFAULT 0
+    esAdmin BIT NOT NULL DEFAULT 0,
+    Activo BIT NOT NULL DEFAULT 1
 );
 
 CREATE TABLE EstadosReserva (

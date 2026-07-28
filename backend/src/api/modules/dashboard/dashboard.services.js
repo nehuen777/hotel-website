@@ -7,10 +7,8 @@ export class DashboardService {
       
       const end = endDate ? new Date(endDate) : new Date();
       const start = startDate ? new Date(startDate) : new Date(new Date().setDate(new Date().getDate() - 30));
-      
-      const hoy = new Date().toISOString().split('T')[0];
 
-      // 1. KPIs Financieros: Ahora calculamos tanto lo pagado como lo pendiente (solo reservas activas)
+      // 1. KPIs Financieros y de Tasa de Cancelación
       const finanzasQuery = await pool.request()
         .input('start', sql.Date, start)
         .input('end', sql.Date, end)
@@ -19,18 +17,19 @@ export class DashboardService {
             ISNULL(SUM(CASE WHEN r.Pagada = 1 THEN DATEDIFF(day, r.FechaCheckIn, r.FechaCheckOut) * th.PrecioPorNoche ELSE 0 END), 0) AS IngresosTotales,
             ISNULL(SUM(CASE WHEN r.Pagada = 0 AND r.ID_EstadoReserva = 1 THEN DATEDIFF(day, r.FechaCheckIn, r.FechaCheckOut) * th.PrecioPorNoche ELSE 0 END), 0) AS MontoPendiente,
             ISNULL(SUM(CASE WHEN r.Pagada = 1 THEN 1 ELSE 0 END), 0) AS CantidadPagadas,
-            ISNULL(SUM(CASE WHEN r.Pagada = 0 AND r.ID_EstadoReserva = 1 THEN 1 ELSE 0 END), 0) AS CantidadPendientes
+            ISNULL(SUM(CASE WHEN r.Pagada = 0 AND r.ID_EstadoReserva = 1 THEN 1 ELSE 0 END), 0) AS CantidadPendientes,
+            COUNT(r.ID_Reserva) AS TotalReservasPeriodo,
+            ISNULL(SUM(CASE WHEN r.ID_EstadoReserva = 2 THEN 1 ELSE 0 END), 0) AS CantidadCanceladas
           FROM Reservas r
           JOIN Habitaciones h ON r.ID_Habitacion = h.ID_Habitacion
           JOIN TiposHabitacion th ON h.ID_TipoHabitacion = th.ID_TipoHabitacion
           WHERE r.FechaCreacion >= @start AND r.FechaCreacion <= @end
         `);
       
-      const ingresos = finanzasQuery.recordset[0].IngresosTotales;
-      const montoPendiente = finanzasQuery.recordset[0].MontoPendiente;
-      const pagadas = finanzasQuery.recordset[0].CantidadPagadas;
-      const pendientes = finanzasQuery.recordset[0].CantidadPendientes;
-      const ticketPromedio = pagadas > 0 ? (ingresos / pagadas) : 0;
+      const record = finanzasQuery.recordset[0];
+      const ingresos = record.IngresosTotales;
+      const ticketPromedio = record.CantidadPagadas > 0 ? (ingresos / record.CantidadPagadas) : 0;
+      const tasaCancelacion = record.TotalReservasPeriodo > 0 ? ((record.CantidadCanceladas / record.TotalReservasPeriodo) * 100) : 0;
 
       // 2. Gráfico de Anillo: Distribución de Estados
       const estadosQuery = await pool.request()
@@ -44,52 +43,55 @@ export class DashboardService {
           GROUP BY e.NombreEstado
         `);
 
-      // 3. Gráfico de Barras: Ocupación por Tipo
-      const ocupacionTipoQuery = await pool.request()
+      // 3. NUEVO: Curva temporal de Ingresos (Gráfico de Líneas)
+      const curvaIngresosQuery = await pool.request()
         .input('start', sql.Date, start)
         .input('end', sql.Date, end)
         .query(`
-          SELECT th.Nombre AS TipoHabitacion, COUNT(r.ID_Reserva) AS CantidadReservas
-          FROM TiposHabitacion th
-          LEFT JOIN Habitaciones h ON th.ID_TipoHabitacion = h.ID_TipoHabitacion
-          LEFT JOIN Reservas r ON h.ID_Habitacion = r.ID_Habitacion AND r.FechaCreacion >= @start AND r.FechaCreacion <= @end
-          GROUP BY th.Nombre
-        `);
-
-      // 4. Panel Operativo Front-Desk: AHORA TRAE EL ESTADO "PAGADA"
-      const recepcionQuery = await pool.request()
-        .input('hoy', sql.Date, hoy)
-        .query(`
           SELECT 
-            r.NombreCliente + ' ' + r.ApellidoCliente AS Huesped,
-            h.NumeroHabitacion AS Habitacion,
-            r.Pagada,
-            CASE WHEN r.FechaCheckIn = @hoy THEN 'Check-in' ELSE 'Check-out' END AS Movimiento
+            CONVERT(varchar, r.FechaCreacion, 23) AS Fecha,
+            ISNULL(SUM(DATEDIFF(day, r.FechaCheckIn, r.FechaCheckOut) * th.PrecioPorNoche), 0) AS IngresoDiario
           FROM Reservas r
           JOIN Habitaciones h ON r.ID_Habitacion = h.ID_Habitacion
-          WHERE (r.FechaCheckIn = @hoy OR r.FechaCheckOut = @hoy) 
-            AND r.ID_EstadoReserva = 1
+          JOIN TiposHabitacion th ON h.ID_TipoHabitacion = th.ID_TipoHabitacion
+          WHERE r.FechaCreacion >= @start AND r.FechaCreacion <= @end 
+            AND r.ID_EstadoReserva != 2 -- Excluir canceladas
+          GROUP BY CONVERT(varchar, r.FechaCreacion, 23)
+          ORDER BY Fecha ASC
         `);
 
-      // 5. Consultas pendientes
-      const consultasQuery = await pool.request().query(`
-        SELECT COUNT(*) AS ConsultasPendientes FROM Consultas WHERE Respondida = 0
-      `);
+      // 4. NUEVO: Tabla de Rentabilidad Estructural por Categoría
+      const rentabilidadQuery = await pool.request()
+        .input('start', sql.Date, start)
+        .input('end', sql.Date, end)
+        .query(`
+          SELECT 
+            th.Nombre AS Categoria,
+            ISNULL(SUM(DATEDIFF(day, r.FechaCheckIn, r.FechaCheckOut)), 0) AS NochesVendidas,
+            ISNULL(SUM(DATEDIFF(day, r.FechaCheckIn, r.FechaCheckOut) * th.PrecioPorNoche), 0) AS IngresoGenerado
+          FROM TiposHabitacion th
+          LEFT JOIN Habitaciones h ON th.ID_TipoHabitacion = h.ID_TipoHabitacion
+          LEFT JOIN Reservas r ON h.ID_Habitacion = r.ID_Habitacion 
+            AND r.FechaCreacion >= @start AND r.FechaCreacion <= @end
+            AND r.ID_EstadoReserva != 2
+          GROUP BY th.Nombre
+          ORDER BY IngresoGenerado DESC
+        `);
 
       return {
         kpis: {
             ingresosTotales: ingresos,
-            montoPendiente: montoPendiente,
-            reservasPendientes: pendientes,
+            montoPendiente: record.MontoPendiente,
+            reservasPendientes: record.CantidadPendientes,
             ticketPromedio: ticketPromedio,
-            consultasPendientes: consultasQuery.recordset[0].ConsultasPendientes,
+            tasaCancelacion: tasaCancelacion.toFixed(1), // Se envía con 1 decimal
         },
         graficoEstados: estadosQuery.recordset,
-        graficoTipos: ocupacionTipoQuery.recordset,
-        movimientosHoy: recepcionQuery.recordset
+        curvaIngresos: curvaIngresosQuery.recordset,
+        tablaRentabilidad: rentabilidadQuery.recordset
       };
     } catch (err) {
-      throw new Error('Error al calcular las métricas del sistema.');
+      throw new Error('Error al calcular las métricas gerenciales del sistema.');
     }
   }
 }

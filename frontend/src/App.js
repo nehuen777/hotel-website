@@ -14,7 +14,7 @@ import MapaHabitaciones from './components/operador/MapaHabitaciones';
 import GestionReservas from './components/operador/GestionReservas';
 import GestionConsultas from './components/operador/GestionConsultas';
 import AdminPanel from './components/admin/AdminstradorPanel.js';
-import HabitacionesAdmin from './components/admin/Habitaciones';
+import HabitacionesAdmin from './components/admin/HabitacionesAdmin.js';
 import Operadores from './components/admin/Operadores';
 import Graficos from './components/admin/Graficos.js';
 

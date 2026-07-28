@@ -13,6 +13,10 @@ import OperadorPanel from './components/operador/OperadorPanel';
 import MapaHabitaciones from './components/operador/MapaHabitaciones';
 import GestionReservas from './components/operador/GestionReservas';
 import GestionConsultas from './components/operador/GestionConsultas';
+import AdminPanel from './components/admin/AdminstradorPanel.js';
+import HabitacionesAdmin from './components/admin/Habitaciones';
+import Operadores from './components/admin/Operadores';
+import Graficos from './components/admin/Graficos.js';
 
 import ScrollToTop from './components/layout/ScrollToTop';
 
@@ -26,7 +30,8 @@ function App() {
 
 function MainContent() {
   const location = useLocation();
-  const isOperadorPage = location.pathname.startsWith('/operador');
+  // CAMBIO: Ahora validamos si es página de operador O de administrador para ocultar el footer
+  const isDashboardPage = location.pathname.startsWith('/operador') || location.pathname.startsWith('/admin');
 
   return (
     <>
@@ -44,7 +49,8 @@ function MainContent() {
         <Route path="/consultas" element={<Consultas />} />
         <Route path="/login" element={<Login />} />
 
-        <Route path="/operador" element={<ProtectedRoute />}>
+        {/* CAMBIO: Agregamos allowedRole="operador" a la ruta protegida existente */}
+        <Route path="/operador" element={<ProtectedRoute allowedRole="operador" />}>
           <Route path="" element={<OperadorPanel />}>
             <Route index element={<Navigate to="mapa" replace />} />
             <Route path="mapa" element={<MapaHabitaciones />} />
@@ -53,8 +59,20 @@ function MainContent() {
           </Route>
         </Route>
 
+        {/* NUEVO: Panel de Administrador estructurado */}
+        <Route path="/admin" element={<ProtectedRoute allowedRole="admin" />}>
+          <Route path="" element={<AdminPanel />}>
+            <Route index element={<Navigate to="habitaciones" replace />} />
+            <Route path="habitaciones" element={<HabitacionesAdmin />} />
+            <Route path="operadores" element={<Operadores />} />
+            <Route path="graficos" element={<Graficos />} />
+          </Route>
+        </Route>
+
       </Routes>
-      {!isOperadorPage && <Footer />}
+      
+      {/* CAMBIO: Usamos la nueva variable isDashboardPage */}
+      {!isDashboardPage && <Footer />}
     </>
   );
 }
